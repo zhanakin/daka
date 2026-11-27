@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">自动打卡助手</string>
+    <string name="app_intro">设置每日打卡时间，开启后将在指定时间自动打开企业微信并点击打卡按钮。请仅用于本人合规考勤，勿用于伪造定位或绕过核验。</string>
+    <string name="enable_auto">启用每日自动打卡</string>
+    <string name="save_time">保存时间并重新设定闹钟</string>
+    <string name="open_accessibility">打开无障碍设置</string>
+    <string name="exact_alarm">检查精确闹钟权限</string>
+    <string name="test_now">立即测试一次</string>
+    <string name="accessibility_label">自动打卡助手</string>
+    <string name="accessibility_description">在企业微信打卡页面自动查找并点击打卡按钮，仅用于本人合规考勤辅助。</string>
+</resources>
