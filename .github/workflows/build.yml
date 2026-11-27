@@ -23,6 +23,18 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Locate Gradle project
+        id: locate
+        run: |
+          if [ -f "$GITHUB_WORKSPACE/settings.gradle.kts" ]; then
+            echo "dir=." >> "$GITHUB_OUTPUT"
+          elif [ -f "$GITHUB_WORKSPACE/AutoClockInApp/settings.gradle.kts" ]; then
+            echo "dir=AutoClockInApp" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::未找到 settings.gradle.kts，请确认工程文件已上传到仓库（可放在根目录或 AutoClockInApp 子目录）"
+            exit 1
+          fi
+
       - name: Accept SDK licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null
 
@@ -38,14 +50,16 @@ jobs:
           gradle-version: '8.9'
 
       - name: Generate Gradle wrapper
+        working-directory: ${{ steps.locate.outputs.dir }}
         run: gradle wrapper --gradle-version 8.9 --distribution-type bin
 
       - name: Build debug APK
+        working-directory: ${{ steps.locate.outputs.dir }}
         run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: ${{ steps.locate.outputs.dir }}/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
